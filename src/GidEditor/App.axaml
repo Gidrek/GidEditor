@@ -1,0 +1,88 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GidEditor.App"
+             Name="GidEditor"
+             RequestedThemeVariant="Default">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="Gid.Background" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="Gid.Surface" Color="#F7F7F5" />
+                    <SolidColorBrush x:Key="Gid.SurfaceHover" Color="#ECEBE8" />
+                    <SolidColorBrush x:Key="Gid.SurfaceActive" Color="#E9E6FA" />
+                    <SolidColorBrush x:Key="Gid.Border" Color="#E7E5E1" />
+                    <SolidColorBrush x:Key="Gid.Text" Color="#2A2C31" />
+                    <SolidColorBrush x:Key="Gid.TextMuted" Color="#8A8E97" />
+                    <SolidColorBrush x:Key="Gid.Accent" Color="#6D5DD3" />
+                    <SolidColorBrush x:Key="Gid.AccentText" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="Gid.Heading" Color="#16181C" />
+                    <SolidColorBrush x:Key="Gid.Link" Color="#5A4CCB" />
+                    <SolidColorBrush x:Key="Gid.CodeText" Color="#B23A62" />
+                    <SolidColorBrush x:Key="Gid.CodeBlockText" Color="#363940" />
+                    <SolidColorBrush x:Key="Gid.CodeBackground" Color="#F5F4F1" />
+                    <SolidColorBrush x:Key="Gid.InlineCodeBackground" Color="#F1EFEA" />
+                    <SolidColorBrush x:Key="Gid.QuoteBar" Color="#CBC4F5" />
+                    <SolidColorBrush x:Key="Gid.Quote" Color="#5E636D" />
+                    <SolidColorBrush x:Key="Gid.Highlight" Color="#FFF0A0" />
+                    <SolidColorBrush x:Key="Gid.TableHeader" Color="#F7F7F5" />
+                    <SolidColorBrush x:Key="Gid.Selection" Color="#406D5DD3" />
+                    <SolidColorBrush x:Key="Gid.Warning" Color="#FFF6DD" />
+                    <SolidColorBrush x:Key="Gid.WarningBorder" Color="#F0D48A" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundPointerOver" Color="#ECEBE8" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundPressed" Color="#E4E3DF" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelected" Color="#E9E6FA" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver" Color="#E1DDF8" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPressed" Color="#D9D4F5" />
+                    <SolidColorBrush x:Key="TreeViewItemForegroundSelected" Color="#16181C" />
+                    <SolidColorBrush x:Key="TreeViewItemForegroundSelectedPointerOver" Color="#16181C" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="Gid.Background" Color="#1C1D20" />
+                    <SolidColorBrush x:Key="Gid.Surface" Color="#17181A" />
+                    <SolidColorBrush x:Key="Gid.SurfaceHover" Color="#27282C" />
+                    <SolidColorBrush x:Key="Gid.SurfaceActive" Color="#2D2946" />
+                    <SolidColorBrush x:Key="Gid.Border" Color="#2C2E33" />
+                    <SolidColorBrush x:Key="Gid.Text" Color="#DEDFE3" />
+                    <SolidColorBrush x:Key="Gid.TextMuted" Color="#7E838D" />
+                    <SolidColorBrush x:Key="Gid.Accent" Color="#9D90FF" />
+                    <SolidColorBrush x:Key="Gid.AccentText" Color="#16161A" />
+                    <SolidColorBrush x:Key="Gid.Heading" Color="#F3F3F6" />
+                    <SolidColorBrush x:Key="Gid.Link" Color="#ABA1FF" />
+                    <SolidColorBrush x:Key="Gid.CodeText" Color="#F29BB8" />
+                    <SolidColorBrush x:Key="Gid.CodeBlockText" Color="#D3D5DA" />
+                    <SolidColorBrush x:Key="Gid.CodeBackground" Color="#24262A" />
+                    <SolidColorBrush x:Key="Gid.InlineCodeBackground" Color="#2C2E33" />
+                    <SolidColorBrush x:Key="Gid.QuoteBar" Color="#574E91" />
+                    <SolidColorBrush x:Key="Gid.Quote" Color="#A7ABB4" />
+                    <SolidColorBrush x:Key="Gid.Highlight" Color="#5B4C14" />
+                    <SolidColorBrush x:Key="Gid.TableHeader" Color="#222327" />
+                    <SolidColorBrush x:Key="Gid.Selection" Color="#559D90FF" />
+                    <SolidColorBrush x:Key="Gid.Warning" Color="#3A3220" />
+                    <SolidColorBrush x:Key="Gid.WarningBorder" Color="#6B5A2A" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundPointerOver" Color="#27282C" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundPressed" Color="#2E2F34" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelected" Color="#2D2946" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver" Color="#342F52" />
+                    <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPressed" Color="#3A3459" />
+                    <SolidColorBrush x:Key="TreeViewItemForegroundSelected" Color="#F3F3F6" />
+                    <SolidColorBrush x:Key="TreeViewItemForegroundSelectedPointerOver" Color="#F3F3F6" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <x:Double x:Key="TreeViewItemMinHeight">28</x:Double>
+            <x:Double x:Key="TreeViewItemIndent">14</x:Double>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#6D5DD3" />
+                <ColorPaletteResources x:Key="Dark" Accent="#9D90FF" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://GidEditor/Styles/AppStyles.axaml" />
+    </Application.Styles>
+</Application>

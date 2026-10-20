@@ -1,0 +1,541 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GidEditor.ViewModels"
+        xmlns:ctl="using:GidEditor.Controls"
+        xmlns:ic="using:FluentIcons.Avalonia"
+        xmlns:ae="using:AvaloniaEdit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+        x:Class="GidEditor.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/gideditor.ico"
+        Title="{Binding WindowTitle}"
+        MinWidth="640" MinHeight="420"
+        Background="{DynamicResource Gid.Background}"
+        DragDrop.AllowDrop="True">
+
+    <Window.Styles>
+        <Style Selector="Button.tool.active">
+            <Setter Property="Foreground" Value="{DynamicResource Gid.Accent}" />
+        </Style>
+        <Style Selector="Button.tool.active /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Gid.SurfaceActive}" />
+        </Style>
+        <Style Selector="Button.segment">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="10,4" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+        </Style>
+        <Style Selector="Button.segment ic|SymbolIcon">
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+        <Style Selector="Button.segment:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+        </Style>
+        <Style Selector="Button.segment.active /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Gid.Background}" />
+            <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+            <Setter Property="BoxShadow" Value="0 1 3 0 #26000000" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ============================== Toolbar ============================== -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource Gid.Surface}"
+                BorderBrush="{DynamicResource Gid.Border}"
+                BorderThickness="0,0,0,1"
+                Padding="8,6">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Classes="tool" IsChecked="{Binding IsSidebarVisible}" ToolTip.Tip="Toggle sidebar (Ctrl+\)">
+                        <ic:SymbolIcon Symbol="PanelLeft" />
+                    </ToggleButton>
+                    <Button Classes="tool" Command="{Binding NewNoteCommand}" CommandParameter="{x:Null}" ToolTip.Tip="New note (Ctrl+N)">
+                        <ic:SymbolIcon Symbol="DocumentAdd" />
+                    </Button>
+                    <Border Classes="toolsep" />
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel x:Name="FormatBar" Orientation="Horizontal" IsEnabled="{Binding CanFormat}">
+                            <Button Classes="tool" Tag="bold" Click="OnFormatClick" ToolTip.Tip="Bold (Ctrl+B)">
+                                <ic:SymbolIcon Symbol="TextBold" />
+                            </Button>
+                            <Button Classes="tool" Tag="italic" Click="OnFormatClick" ToolTip.Tip="Italic (Ctrl+I)">
+                                <ic:SymbolIcon Symbol="TextItalic" />
+                            </Button>
+                            <Button Classes="tool" Tag="strike" Click="OnFormatClick" ToolTip.Tip="Strikethrough (Ctrl+Shift+X)">
+                                <ic:SymbolIcon Symbol="TextStrikethrough" />
+                            </Button>
+                            <Button Classes="tool" Tag="code" Click="OnFormatClick" ToolTip.Tip="Inline code (Ctrl+`)">
+                                <ic:SymbolIcon Symbol="Code" />
+                            </Button>
+                            <Border Classes="toolsep" />
+                            <Button Classes="tool" Tag="h1" Click="OnFormatClick" ToolTip.Tip="Heading 1 (Ctrl+1)">
+                                <ic:SymbolIcon Symbol="TextHeader1" />
+                            </Button>
+                            <Button Classes="tool" Tag="h2" Click="OnFormatClick" ToolTip.Tip="Heading 2 (Ctrl+2)">
+                                <ic:SymbolIcon Symbol="TextHeader2" />
+                            </Button>
+                            <Button Classes="tool" Tag="h3" Click="OnFormatClick" ToolTip.Tip="Heading 3 (Ctrl+3)">
+                                <ic:SymbolIcon Symbol="TextHeader3" />
+                            </Button>
+                            <Border Classes="toolsep" />
+                            <Button Classes="tool" Tag="bullet" Click="OnFormatClick" ToolTip.Tip="Bulleted list (Ctrl+Shift+8)">
+                                <ic:SymbolIcon Symbol="TextBulletList" />
+                            </Button>
+                            <Button Classes="tool" Tag="number" Click="OnFormatClick" ToolTip.Tip="Numbered list (Ctrl+Shift+7)">
+                                <ic:SymbolIcon Symbol="TextNumberList" />
+                            </Button>
+                            <Button Classes="tool" Tag="task" Click="OnFormatClick" ToolTip.Tip="Task list (Ctrl+Shift+9)">
+                                <ic:SymbolIcon Symbol="TaskList" />
+                            </Button>
+                            <Button Classes="tool" Tag="quote" Click="OnFormatClick" ToolTip.Tip="Quote (Ctrl+Shift+.)">
+                                <ic:SymbolIcon Symbol="TextQuote" />
+                            </Button>
+                            <Border Classes="toolsep" />
+                            <Button Classes="tool" Tag="link" Click="OnFormatClick" ToolTip.Tip="Link (Ctrl+K)">
+                                <ic:SymbolIcon Symbol="Link" />
+                            </Button>
+                            <Button Classes="tool" Tag="image" Click="OnFormatClick" ToolTip.Tip="Insert image (you can also paste or drop images)">
+                                <ic:SymbolIcon Symbol="Image" />
+                            </Button>
+                            <Button Classes="tool" Tag="table" Click="OnFormatClick" ToolTip.Tip="Table">
+                                <ic:SymbolIcon Symbol="Table" />
+                            </Button>
+                            <Button Classes="tool" Tag="codeblock" Click="OnFormatClick" ToolTip.Tip="Code block (Ctrl+Shift+C)">
+                                <ic:SymbolIcon Symbol="CodeBlock" />
+                            </Button>
+                            <Button Classes="tool" Tag="rule" Click="OnFormatClick" ToolTip.Tip="Divider">
+                                <ic:SymbolIcon Symbol="LineHorizontal1" />
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" Margin="8,0,0,0">
+                    <Border Classes="segmented">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Classes="segment" Classes.active="{Binding IsEditorMode}"
+                                    Command="{Binding SetViewModeCommand}" CommandParameter="Editor"
+                                    ToolTip.Tip="Editor only (Ctrl+E cycles views)">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <ic:SymbolIcon Symbol="Edit" />
+                                    <TextBlock Text="Editor" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="segment" Classes.active="{Binding IsSplitMode}"
+                                    Command="{Binding SetViewModeCommand}" CommandParameter="Split"
+                                    ToolTip.Tip="Editor and preview side by side">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <ic:SymbolIcon Symbol="SplitVertical" />
+                                    <TextBlock Text="Split" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="segment" Classes.active="{Binding IsPreviewMode}"
+                                    Command="{Binding SetViewModeCommand}" CommandParameter="Preview"
+                                    ToolTip.Tip="Preview only">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <ic:SymbolIcon Symbol="Eye" />
+                                    <TextBlock Text="Preview" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Classes="tool" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="Toggle light / dark">
+                        <Panel>
+                            <ic:SymbolIcon x:Name="MoonIcon" Symbol="WeatherMoon" />
+                            <ic:SymbolIcon x:Name="SunIcon" Symbol="WeatherSunny" IsVisible="False" />
+                        </Panel>
+                    </Button>
+
+                    <Button Classes="tool" ToolTip.Tip="More">
+                        <ic:SymbolIcon Symbol="MoreHorizontal" />
+                        <Button.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <MenuItem Header="Open Folder…" Command="{Binding OpenFolderCommand}" InputGesture="Ctrl+O" />
+                                <MenuItem Header="Show in File Manager" Command="{Binding RevealCommand}" CommandParameter="{x:Null}"
+                                          IsEnabled="{Binding HasWorkspace}" />
+                                <MenuItem Header="Close Folder" Command="{Binding CloseWorkspaceCommand}" IsEnabled="{Binding HasWorkspace}" />
+                                <Separator />
+                                <MenuItem Header="Autosave" ToggleType="CheckBox" IsChecked="{Binding Autosave}" />
+                                <MenuItem Header="Monospace Editor Font" ToggleType="CheckBox" IsChecked="{Binding MonospaceEditor}" />
+                                <MenuItem Header="Text Size">
+                                    <MenuItem Header="Larger" Command="{Binding ChangeFontSizeCommand}" CommandParameter="1" InputGesture="Ctrl+OemPlus" />
+                                    <MenuItem Header="Smaller" Command="{Binding ChangeFontSizeCommand}" CommandParameter="-1" InputGesture="Ctrl+OemMinus" />
+                                    <MenuItem Header="Reset" Command="{Binding ChangeFontSizeCommand}" CommandParameter="0" InputGesture="Ctrl+D0" />
+                                </MenuItem>
+                                <MenuItem Header="Theme">
+                                    <MenuItem Header="System" Command="{Binding SetThemeCommand}" CommandParameter="System" />
+                                    <MenuItem Header="Light" Command="{Binding SetThemeCommand}" CommandParameter="Light" />
+                                    <MenuItem Header="Dark" Command="{Binding SetThemeCommand}" CommandParameter="Dark" />
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ============================== Body ============================== -->
+        <Grid x:Name="BodyGrid" Grid.Row="1" ColumnDefinitions="260,Auto,*">
+
+            <!-- Sidebar -->
+            <Border x:Name="Sidebar" Grid.Column="0"
+                    Background="{DynamicResource Gid.Surface}"
+                    IsVisible="{Binding IsSidebarVisible}">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="8,8,8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="2">
+                            <Button Classes="tool small" Classes.active="{Binding IsExplorerPanel}"
+                                    Command="{Binding ShowExplorerCommand}" ToolTip.Tip="Notes (Ctrl+Shift+E)">
+                                <ic:SymbolIcon Symbol="DocumentMultiple" />
+                            </Button>
+                            <Button Classes="tool small" Classes.active="{Binding IsSearchPanel}"
+                                    Command="{Binding ShowSearchCommand}" ToolTip.Tip="Search (Ctrl+Shift+F)">
+                                <ic:SymbolIcon Symbol="Search" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="0">
+                            <StackPanel.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding Path="IsExplorerPanel" />
+                                    <Binding Path="HasWorkspace" />
+                                </MultiBinding>
+                            </StackPanel.IsVisible>
+                            <Button Classes="tool small" Command="{Binding NewNoteCommand}" CommandParameter="{x:Null}" ToolTip.Tip="New note">
+                                <ic:SymbolIcon Symbol="DocumentAdd" />
+                            </Button>
+                            <Button Classes="tool small" Command="{Binding NewFolderCommand}" CommandParameter="{x:Null}" ToolTip.Tip="New folder">
+                                <ic:SymbolIcon Symbol="FolderAdd" />
+                            </Button>
+                            <Button Classes="tool small" Command="{Binding CollapseAllCommand}" ToolTip.Tip="Collapse all folders">
+                                <ic:SymbolIcon Symbol="ArrowCollapseAll" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Explorer -->
+                    <DockPanel IsVisible="{Binding IsExplorerPanel}">
+                        <Button DockPanel.Dock="Top" Classes="link" Margin="6,2,6,4" Padding="8,4"
+                                IsVisible="{Binding HasWorkspace}" ToolTip.Tip="{Binding WorkspacePath}">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Classes="section-title" Text="{Binding WorkspaceName}" TextTrimming="CharacterEllipsis" />
+                                <ic:SymbolIcon Grid.Column="1" Symbol="ChevronDown" FontSize="12" Foreground="{DynamicResource Gid.TextMuted}" />
+                            </Grid>
+                            <Button.Flyout>
+                                <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                    <MenuItem Header="Open Folder…" Command="{Binding OpenFolderCommand}" />
+                                    <MenuItem Header="Recent" ItemsSource="{Binding RecentWorkspaces}" IsEnabled="{Binding HasRecentWorkspaces}">
+                                        <MenuItem.Styles>
+                                            <Style Selector="MenuItem > MenuItem" x:DataType="x:String">
+                                                <Setter Property="Header" Value="{Binding}" />
+                                                <Setter Property="Command" Value="{Binding $parent[Window].((vm:MainViewModel)DataContext).OpenRecentCommand}" />
+                                                <Setter Property="CommandParameter" Value="{Binding}" />
+                                            </Style>
+                                        </MenuItem.Styles>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Header="Refresh" Command="{Binding RefreshTreeCommand}" />
+                                    <MenuItem Header="Show in File Manager" Command="{Binding RevealCommand}" CommandParameter="{x:Null}" />
+                                    <MenuItem Header="Close Folder" Command="{Binding CloseWorkspaceCommand}" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+
+                        <Panel>
+                            <TreeView x:Name="FileTree" Classes="files"
+                                      ItemsSource="{Binding Root.Children}"
+                                      SelectedItem="{Binding SelectedNode}"
+                                      IsVisible="{Binding HasWorkspace}"
+                                      Background="Transparent">
+                                <TreeView.Styles>
+                                    <Style Selector="TreeViewItem" x:DataType="vm:FileNodeViewModel">
+                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                                    </Style>
+                                </TreeView.Styles>
+                                <TreeView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="New Note" Command="{Binding NewNoteCommand}" CommandParameter="{x:Null}" />
+                                        <MenuItem Header="New Folder" Command="{Binding NewFolderCommand}" CommandParameter="{x:Null}" />
+                                        <Separator />
+                                        <MenuItem Header="Refresh" Command="{Binding RefreshTreeCommand}" />
+                                    </ContextMenu>
+                                </TreeView.ContextMenu>
+                                <TreeView.ItemTemplate>
+                                    <TreeDataTemplate DataType="vm:FileNodeViewModel" ItemsSource="{Binding Children}">
+                                        <StackPanel Orientation="Horizontal" Spacing="7" Background="Transparent">
+                                            <StackPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Open" Command="{Binding Owner.OpenNodeCommand}" CommandParameter="{Binding}" IsVisible="{Binding IsFile}" />
+                                                    <MenuItem Header="New Note" Command="{Binding Owner.NewNoteCommand}" CommandParameter="{Binding}" />
+                                                    <MenuItem Header="New Folder" Command="{Binding Owner.NewFolderCommand}" CommandParameter="{Binding}" />
+                                                    <Separator />
+                                                    <MenuItem Header="Rename…" Command="{Binding Owner.RenameCommand}" CommandParameter="{Binding}" InputGesture="F2" />
+                                                    <MenuItem Header="Show in File Manager" Command="{Binding Owner.RevealCommand}" CommandParameter="{Binding}" />
+                                                    <Separator />
+                                                    <MenuItem Header="Move to Trash" Command="{Binding Owner.DeleteCommand}" CommandParameter="{Binding}" InputGesture="Delete" />
+                                                </ContextMenu>
+                                            </StackPanel.ContextMenu>
+                                            <Panel VerticalAlignment="Center">
+                                                <ic:SymbolIcon Symbol="Folder" FontSize="16" IsVisible="{Binding IsDirectory}"
+                                                               Foreground="{DynamicResource Gid.Accent}" />
+                                                <ic:SymbolIcon Symbol="DocumentText" FontSize="16" IsVisible="{Binding IsFile}"
+                                                               Foreground="{DynamicResource Gid.TextMuted}" />
+                                            </Panel>
+                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+                                    </TreeDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+
+                            <StackPanel IsVisible="{Binding !HasWorkspace}" Margin="16,24" Spacing="12">
+                                <TextBlock Classes="muted" TextWrapping="Wrap" FontSize="13"
+                                           Text="Open a folder to use it as your notes workspace." />
+                                <Button Classes="primary" Command="{Binding OpenFolderCommand}" Content="Open Folder…" />
+                            </StackPanel>
+                        </Panel>
+                    </DockPanel>
+
+                    <!-- Search -->
+                    <DockPanel IsVisible="{Binding IsSearchPanel}" Margin="10,4,10,0">
+                        <TextBox x:Name="SearchBox" DockPanel.Dock="Top"
+                                 PlaceholderText="Search all notes"
+                                 Text="{Binding SearchQuery}"
+                                 IsEnabled="{Binding HasWorkspace}">
+                            <TextBox.InnerLeftContent>
+                                <ic:SymbolIcon Symbol="Search" FontSize="15" Margin="8,0,0,0" Foreground="{DynamicResource Gid.TextMuted}" />
+                            </TextBox.InnerLeftContent>
+                        </TextBox>
+                        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="2,8,2,6">
+                            <TextBlock Classes="muted" FontSize="12" Text="{Binding SearchSummary}" />
+                            <ProgressBar Grid.Column="1" IsIndeterminate="True" Width="40" MinWidth="40" IsVisible="{Binding IsSearching}" />
+                        </Grid>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding SearchResults}" Margin="0,0,0,12">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="vm:SearchFileViewModel">
+                                        <StackPanel Margin="0,0,0,6">
+                                            <Button Classes="link" Padding="6,4"
+                                                    Command="{Binding Owner.OpenSearchFileCommand}" CommandParameter="{Binding}">
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <ic:SymbolIcon Symbol="DocumentText" FontSize="15" Margin="0,0,6,0"
+                                                                   Foreground="{DynamicResource Gid.TextMuted}" VerticalAlignment="Top" />
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding FileName}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Text="{Binding Folder}" Classes="muted" FontSize="11" IsVisible="{Binding HasFolder}"
+                                                                   TextTrimming="CharacterEllipsis" />
+                                                    </StackPanel>
+                                                    <Border Grid.Column="2" Background="{DynamicResource Gid.SurfaceHover}" CornerRadius="8"
+                                                            Padding="6,0" VerticalAlignment="Top" Margin="6,1,0,0">
+                                                        <TextBlock Text="{Binding CountText}" FontSize="11" Classes="muted" />
+                                                    </Border>
+                                                </Grid>
+                                            </Button>
+                                            <ItemsControl ItemsSource="{Binding Matches}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="vm:SearchMatchViewModel">
+                                                        <Button Classes="link" Padding="27,3,6,3"
+                                                                Command="{Binding Owner.OpenSearchMatchCommand}" CommandParameter="{Binding}"
+                                                                ToolTip.Tip="{Binding LineLabel, StringFormat='Line {0}'}">
+                                                            <!-- Runs stay on one line: whitespace between them would render as spaces. -->
+                                                            <TextBlock FontSize="12" TextTrimming="CharacterEllipsis"><Run Text="{Binding Before}" Foreground="{DynamicResource Gid.TextMuted}" /><Run Text="{Binding Text}" FontWeight="SemiBold" Background="{DynamicResource Gid.Highlight}" /><Run Text="{Binding After}" Foreground="{DynamicResource Gid.TextMuted}" /></TextBlock>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
+                </DockPanel>
+            </Border>
+
+            <GridSplitter x:Name="SidebarSplitter" Grid.Column="1" Width="1" MinWidth="1"
+                          Background="{DynamicResource Gid.Border}"
+                          ResizeDirection="Columns"
+                          IsVisible="{Binding IsSidebarVisible}" />
+
+            <!-- Main area -->
+            <Panel Grid.Column="2">
+
+                <!-- Welcome: no workspace yet -->
+                <ScrollViewer IsVisible="{Binding !HasWorkspace}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Spacing="14" Margin="32">
+                        <Border Width="68" Height="68" CornerRadius="18" Background="{DynamicResource Gid.Accent}" HorizontalAlignment="Center">
+                            <ic:SymbolIcon Symbol="Notebook" FontSize="36" Foreground="{DynamicResource Gid.AccentText}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Text="GidEditor" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource Gid.Heading}" />
+                        <TextBlock Classes="muted" TextWrapping="Wrap" TextAlignment="Center" FontSize="14" LineHeight="22"
+                                   Text="Markdown notes that live in a folder you own: on your computer, in Dropbox, Google Drive, or anywhere you sync. Your notes are always yours." />
+                        <Button Classes="primary" HorizontalAlignment="Center" Margin="0,8,0,0" Command="{Binding OpenFolderCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <ic:SymbolIcon Symbol="FolderOpen" FontSize="18" />
+                                <TextBlock Text="Open Folder…" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel IsVisible="{Binding HasRecentWorkspaces}" Margin="0,18,0,0" Spacing="4">
+                            <TextBlock Classes="section-title" Text="RECENT" Margin="8,0,0,4" />
+                            <ItemsControl ItemsSource="{Binding RecentWorkspaces}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="x:String">
+                                        <Button Classes="link"
+                                                Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).OpenRecentCommand}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                                <ic:SymbolIcon Symbol="Folder" FontSize="16" Foreground="{DynamicResource Gid.Accent}" />
+                                                <TextBlock Text="{Binding}" FontSize="13" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Workspace -->
+                <DockPanel IsVisible="{Binding HasWorkspace}">
+
+                    <!-- Tabs -->
+                    <Border DockPanel.Dock="Top"
+                            Background="{DynamicResource Gid.Surface}"
+                            BorderBrush="{DynamicResource Gid.Border}"
+                            BorderThickness="0,0,0,1"
+                            IsVisible="{Binding HasActiveDocument}">
+                        <ListBox x:Name="Tabs" Classes="tabs"
+                                 ItemsSource="{Binding Documents}"
+                                 SelectedItem="{Binding ActiveDocument}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="vm:DocumentViewModel">
+                                    <Grid ColumnDefinitions="*,Auto,Auto" ToolTip.Tip="{Binding FilePath}" Background="Transparent">
+                                        <TextBlock Text="{Binding Title}" FontSize="13" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" Margin="0,0,6,0" />
+                                        <Ellipse Grid.Column="1" Width="7" Height="7" Margin="0,0,2,0"
+                                                 Fill="{DynamicResource Gid.Accent}" IsVisible="{Binding IsDirty}" />
+                                        <Button Grid.Column="2" Classes="tool small tab-close"
+                                                MinWidth="22" MinHeight="22" Padding="3"
+                                                Command="{Binding RequestCloseCommand}" ToolTip.Tip="Close (Ctrl+W)">
+                                            <ic:SymbolIcon Symbol="Dismiss" FontSize="12" />
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+
+                    <!-- File changed / missing banners -->
+                    <Border DockPanel.Dock="Top" Background="{DynamicResource Gid.Warning}"
+                            BorderBrush="{DynamicResource Gid.WarningBorder}" BorderThickness="0,0,0,1"
+                            Padding="14,8" IsVisible="{Binding ActiveDocument.HasBanner, FallbackValue=False}">
+                        <Panel>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ActiveDocument.HasConflict, FallbackValue=False}">
+                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="13"
+                                           Text="This note was changed on disk (another device or app) while you were editing it." />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="12,0,0,0">
+                                    <Button Content="Use Disk Version" Command="{Binding ActiveDocument.TakeDiskVersionCommand, FallbackValue={x:Null}}" />
+                                    <Button Content="Keep Mine" Command="{Binding ActiveDocument.KeepMineCommand, FallbackValue={x:Null}}" />
+                                </StackPanel>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ActiveDocument.IsMissing, FallbackValue=False}">
+                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="13"
+                                           Text="This note was moved or deleted outside GidEditor." />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="12,0,0,0">
+                                    <Button Content="Save Again" Command="{Binding ActiveDocument.RestoreCommand, FallbackValue={x:Null}}" />
+                                    <Button Content="Close" Command="{Binding ActiveDocument.RequestCloseCommand, FallbackValue={x:Null}}" />
+                                </StackPanel>
+                            </Grid>
+                        </Panel>
+                    </Border>
+
+                    <!-- Editor + preview -->
+                    <Panel>
+                        <Grid x:Name="EditorArea" ColumnDefinitions="*,Auto,*" IsVisible="{Binding HasActiveDocument}">
+                            <ae:TextEditor x:Name="Editor" Grid.Column="0"
+                                           WordWrap="True"
+                                           ShowLineNumbers="False"
+                                           HorizontalScrollBarVisibility="Disabled"
+                                           VerticalScrollBarVisibility="Auto" />
+                            <GridSplitter x:Name="EditorSplitter" Grid.Column="1" Width="1" MinWidth="1"
+                                          ResizeDirection="Columns"
+                                          Background="{DynamicResource Gid.Border}" />
+                            <ctl:MarkdownViewer x:Name="Preview" Grid.Column="2"
+                                                Markdown="{Binding ActiveDocument.PreviewText, FallbackValue={x:Null}}"
+                                                BaseDirectory="{Binding ActiveDocument.DirectoryPath, FallbackValue={x:Null}}"
+                                                BaseFontSize="{Binding EditorFontSize}" />
+                        </Grid>
+
+                        <StackPanel IsVisible="{Binding !HasActiveDocument}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Spacing="10" Margin="32">
+                            <ic:SymbolIcon Symbol="DocumentText" FontSize="44" Foreground="{DynamicResource Gid.TextMuted}" HorizontalAlignment="Center" />
+                            <TextBlock Text="No note open" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                            <TextBlock Classes="muted" Text="Pick a note in the sidebar, or start a new one." HorizontalAlignment="Center" />
+                            <Button Classes="primary" HorizontalAlignment="Center" Margin="0,8,0,0"
+                                    Command="{Binding NewNoteCommand}" CommandParameter="{x:Null}" Content="New Note" />
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,22,0,0"
+                                  HorizontalAlignment="Center">
+                                <Grid.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Setter Property="FontSize" Value="12" />
+                                        <Setter Property="Margin" Value="8,3" />
+                                    </Style>
+                                </Grid.Styles>
+                                <TextBlock Grid.Row="0" Classes="muted" Text="New note" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="HintNew" Text="Ctrl+N" />
+                                <TextBlock Grid.Row="1" Classes="muted" Text="Search notes" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="HintSearch" Text="Ctrl+Shift+F" />
+                                <TextBlock Grid.Row="2" Classes="muted" Text="Switch view" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="HintView" Text="Ctrl+E" />
+                                <TextBlock Grid.Row="3" Classes="muted" Text="Toggle sidebar" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="HintSidebar" Text="Ctrl+\" />
+                            </Grid>
+                        </StackPanel>
+                    </Panel>
+                </DockPanel>
+            </Panel>
+        </Grid>
+
+        <!-- ============================== Status bar ============================== -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource Gid.Surface}"
+                BorderBrush="{DynamicResource Gid.Border}"
+                BorderThickness="0,1,0,0"
+                Padding="12,4">
+            <Grid ColumnDefinitions="*,Auto">
+                <Grid.Styles>
+                    <Style Selector="TextBlock">
+                        <Setter Property="FontSize" Value="11.5" />
+                        <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </Grid.Styles>
+                <TextBlock x:Name="StatusPath" Text="{Binding ActiveDocument.FilePath, FallbackValue=''}" TextTrimming="LeadingCharacterEllipsis" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16" Margin="12,0,0,0"
+                            IsVisible="{Binding HasActiveDocument}">
+                    <TextBlock Text="{Binding ActiveDocument.WordCount, StringFormat='{}{0} words', FallbackValue=''}" />
+                    <TextBlock Text="{Binding CaretPosition}" />
+                    <TextBlock Text="{Binding ActiveDocument.SaveStatus, FallbackValue=''}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

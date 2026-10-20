@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GidEditor/GidEditor.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GidEditor.Tests/GidEditor.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,181 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ic="using:FluentIcons.Avalonia"
+        xmlns:ae="using:AvaloniaEdit">
+
+    <Style Selector="ic|SymbolIcon">
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    <!-- Flat icon buttons used in the toolbar and sidebar -->
+    <Style Selector=":is(Button).tool">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="6" />
+        <Setter Property="Margin" Value="1,0" />
+        <Setter Property="MinWidth" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector=":is(Button).tool.small">
+        <Setter Property="MinWidth" Value="26" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="Padding" Value="4" />
+    </Style>
+    <Style Selector=":is(Button).tool.small ic|SymbolIcon">
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+    <Style Selector=":is(Button).tool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+    <Style Selector=":is(Button).tool:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceActive}" />
+    </Style>
+    <Style Selector="ToggleButton.tool:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceActive}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Accent}" />
+    </Style>
+    <Style Selector=":is(Button).tool:disabled">
+        <Setter Property="Opacity" Value="0.35" />
+    </Style>
+    <Style Selector=":is(Button).tool:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+
+    <Style Selector="Border.toolsep">
+        <Setter Property="Width" Value="1" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Margin" Value="6,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{DynamicResource Gid.Border}" />
+    </Style>
+
+    <!-- Editor / Split / Preview segmented switch -->
+    <Style Selector="Border.segmented">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceHover}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ToggleButton.segment">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="10,4" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+    </Style>
+    <Style Selector="ToggleButton.segment ic|SymbolIcon">
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+    <Style Selector="ToggleButton.segment:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+    <Style Selector="ToggleButton.segment:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.Background}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+        <Setter Property="BoxShadow" Value="0 1 3 0 #22000000" />
+    </Style>
+
+    <!-- Primary call-to-action button -->
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{DynamicResource Gid.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.AccentText}" />
+        <Setter Property="Padding" Value="18,9" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.AccentText}" />
+        <Setter Property="Opacity" Value="0.9" />
+    </Style>
+    <Style Selector="Button.link">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,5" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Button.link:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceHover}" />
+    </Style>
+
+    <!-- Document tabs -->
+    <Style Selector="ListBox.tabs">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem">
+        <Setter Property="Padding" Value="12,0,6,0" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="MaxWidth" Value="220" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Gid.Border}" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.SurfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.Background}" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Gid.Background}" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem Button.tab-close">
+        <Setter Property="Opacity" Value="0" />
+    </Style>
+    <Style Selector="ListBox.tabs ListBoxItem:selected Button.tab-close, ListBox.tabs ListBoxItem:pointerover Button.tab-close">
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <!-- Sidebar -->
+    <Style Selector="TextBlock.section-title">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LetterSpacing" Value="0.6" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TreeView.files TreeViewItem">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Margin" Value="6,0" />
+    </Style>
+
+    <!-- Preview code block: copy button appears on hover -->
+    <Style Selector="Border.code-block Button.code-copy">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Border.code-block:pointerover Button.code-copy">
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="Border.code-block:pointerover TextBlock.code-lang">
+        <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="TextBlock.muted">
+        <Setter Property="Foreground" Value="{DynamicResource Gid.TextMuted}" />
+    </Style>
+
+    <Style Selector="ae|TextEditor">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Gid.Text}" />
+    </Style>
+</Styles>
