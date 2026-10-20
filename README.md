@@ -79,3 +79,20 @@ src/GidEditor/
 tests/GidEditor.Tests/   Unit tests and headless UI/screenshot tests
 samples/Notes/           Example workspace
 ```
+
+## License
+
+Copyright © 2026 Giovanni Cortes
+
+GidEditor is open source under the [MIT License](LICENSE).
+
+### Third-party components
+
+| Component | License |
+| --- | --- |
+| [Avalonia](https://github.com/AvaloniaUI/Avalonia) | MIT |
+| [AvaloniaEdit](https://github.com/AvaloniaUI/AvaloniaEdit) | MIT |
+| [Markdig](https://github.com/xoofx/markdig) | BSD-2-Clause |
+| [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MIT |
+| [FluentIcons.Avalonia](https://github.com/davidxuang/FluentIcons) | MIT |
+| [Inter font](https://github.com/rsms/inter) | SIL Open Font License 1.1 |

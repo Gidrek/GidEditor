@@ -8,6 +8,9 @@
     <Product>GidEditor</Product>
     <Description>Cross-platform Markdown notes editor that keeps your notes as plain files in a folder you own.</Description>
     <Version>0.1.0</Version>
+    <Authors>Giovanni Cortes</Authors>
+    <Copyright>Copyright © 2026 Giovanni Cortes</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
