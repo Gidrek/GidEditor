@@ -177,6 +177,8 @@
                                     <MenuItem Header="Light" Command="{Binding SetThemeCommand}" CommandParameter="Light" />
                                     <MenuItem Header="Dark" Command="{Binding SetThemeCommand}" CommandParameter="Dark" />
                                 </MenuItem>
+                                <Separator />
+                                <MenuItem Header="About GidEditor" Click="OnAboutClick" />
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

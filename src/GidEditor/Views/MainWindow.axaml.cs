@@ -616,6 +616,10 @@ public partial class MainWindow : Window, IUiServices
         if (match.Success) MarkdownFormatter.ToggleTaskAt(doc, line.Offset + match.Groups[1].Index);
     }
 
+    // ================================================================ About & credits
+
+    private void OnAboutClick(object? sender, RoutedEventArgs e) => _ = new AboutWindow().ShowDialog(this);
+
     // ================================================================ Window lifecycle
 
     private void RestoreWindowBounds()

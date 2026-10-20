@@ -88,11 +88,9 @@ GidEditor is open source under the [MIT License](LICENSE).
 
 ### Third-party components
 
-| Component | License |
-| --- | --- |
-| [Avalonia](https://github.com/AvaloniaUI/Avalonia) | MIT |
-| [AvaloniaEdit](https://github.com/AvaloniaUI/AvaloniaEdit) | MIT |
-| [Markdig](https://github.com/xoofx/markdig) | BSD-2-Clause |
-| [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MIT |
-| [FluentIcons.Avalonia](https://github.com/davidxuang/FluentIcons) | MIT |
-| [Inter font](https://github.com/rsms/inter) | SIL Open Font License 1.1 |
+GidEditor is built on open source components (Avalonia, AvaloniaEdit, Markdig, SkiaSharp, the Inter font and others).
+Their full license texts are in [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt). That file ships next to the app,
+and you can read it in the app under **… → About GidEditor**.
+
+When you add a dependency, add its license to `THIRD-PARTY-NOTICES.txt`. The test suite fails if a shipped
+library has no entry.
