@@ -54,18 +54,45 @@ dotnet test
 The tests include headless UI tests that render the real window with Skia and save screenshots to
 `tests/GidEditor.Tests/bin/Debug/net10.0/snapshots/`.
 
-## Publishing
+## Download
 
-Self-contained builds (no .NET install needed on the target machine):
+Get the latest version from the [Releases page](https://github.com/Gidrek/GidEditor/releases).
+
+| Platform | File | Install |
+| --- | --- | --- |
+| Windows | `GidEditor-<version>-win-x64-setup.exe` | Run the installer. No admin rights needed. A portable `.zip` is also available. |
+| macOS | `GidEditor-<version>-osx-arm64.dmg` (Apple Silicon) or `osx-x64` (Intel) | Open the `.dmg` and drag GidEditor to Applications. |
+| Linux (Debian, Ubuntu, Mint…) | `gideditor_<version>_amd64.deb` (or `arm64`) | `sudo apt install ./gideditor_<version>_amd64.deb` |
+| Linux (other) | `GidEditor-<version>-linux-x64.tar.gz` | Extract and run `GidEditor`. |
+
+The builds are not signed with paid certificates yet, so the first launch shows a warning:
+
+- **Windows:** in "Windows protected your PC", click **More info → Run anyway**.
+- **macOS:** open the app once, then go to **System Settings → Privacy & Security** and click **Open Anyway**.
+
+## Releasing
+
+Releases are built by GitHub Actions ([`.github/workflows/release.yml`](.github/workflows/release.yml)).
+Push a version tag and the workflow runs the tests, builds every package, and publishes a GitHub Release
+with them and a `SHA256SUMS.txt`:
 
 ```bash
-dotnet publish src/GidEditor -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish/win-x64
-dotnet publish src/GidEditor -c Release -r osx-arm64 --self-contained -o publish/osx-arm64
-dotnet publish src/GidEditor -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true -o publish/linux-x64
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
-Use `osx-x64` for Intel Macs. On macOS, the published output still needs to be wrapped in a `.app` bundle
-(with an `Info.plist`) and signed for distribution.
+A tag with a suffix (`v0.3.0-beta.1`) is published as a pre-release. To build packages without releasing,
+open **Actions → Release → Run workflow**. The files are attached to the run as artifacts.
+
+The packaging scripts also work locally:
+
+```bash
+build/linux/package.sh linux-x64 0.2.0          # .deb + .tar.gz (Linux)
+build/macos/package.sh osx-arm64 0.2.0          # .app in a .dmg (macOS)
+pwsh build/windows/package.ps1 -Rid win-x64 -Version 0.2.0   # installer + .zip (Windows, needs Inno Setup 6+)
+```
+
+Output goes to `publish/`.
 
 ## Project layout
 
@@ -78,6 +105,8 @@ src/GidEditor/
   Views/         Main window and dialogs
 tests/GidEditor.Tests/   Unit tests and headless UI/screenshot tests
 samples/Notes/           Example workspace
+build/                   Packaging scripts for Linux, macOS and Windows
+.github/workflows/       CI tests and release builds
 ```
 
 ## License
