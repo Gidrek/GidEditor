@@ -171,15 +171,19 @@ public sealed partial class MainViewModel : ViewModelBase
         foreach (var n in Root.Descendants()) n.IsExpanded = false;
     }
 
-    /// <summary>Folder that new notes go into: the selected folder, the selected note's folder, or the root.</summary>
+    /// <summary>
+    /// Folder that new notes go into: the given node, else the selected folder or the selected note's folder,
+    /// else the workspace root (nothing selected).
+    /// </summary>
     private string TargetFolder(FileNodeViewModel? node)
     {
         node ??= SelectedNode;
         if (node != null) return node.IsDirectory ? node.FullPath : Path.GetDirectoryName(node.FullPath)!;
-        if (ActiveDocument != null && WorkspacePath != null && WorkspaceFiles.IsUnder(WorkspacePath, ActiveDocument.FilePath))
-            return ActiveDocument.DirectoryPath;
         return WorkspacePath!;
     }
+
+    [RelayCommand]
+    private void ClearSelection() => SelectedNode = null;
 
     [RelayCommand]
     private async Task NewNote(FileNodeViewModel? parent)

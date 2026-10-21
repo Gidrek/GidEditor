@@ -234,6 +234,9 @@
                             </Grid>
                             <Button.Flyout>
                                 <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                    <MenuItem Header="New Note" Command="{Binding NewNoteCommand}" CommandParameter="{Binding Root}" />
+                                    <MenuItem Header="New Folder" Command="{Binding NewFolderCommand}" CommandParameter="{Binding Root}" />
+                                    <Separator />
                                     <MenuItem Header="Open Folder…" Command="{Binding OpenFolderCommand}" />
                                     <MenuItem Header="Recent" ItemsSource="{Binding RecentWorkspaces}" IsEnabled="{Binding HasRecentWorkspaces}">
                                         <MenuItem.Styles>
@@ -262,11 +265,17 @@
                                     <Style Selector="TreeViewItem" x:DataType="vm:FileNodeViewModel">
                                         <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                                     </Style>
+                                    <!-- Rows span the full width, so right-clicking anywhere on a row opens that row's menu. -->
+                                    <Style Selector="TreeViewItem /template/ ContentPresenter#PART_HeaderPresenter">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
                                 </TreeView.Styles>
                                 <TreeView.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="New Note" Command="{Binding NewNoteCommand}" CommandParameter="{x:Null}" />
-                                        <MenuItem Header="New Folder" Command="{Binding NewFolderCommand}" CommandParameter="{x:Null}" />
+                                        <!-- Shown when right-clicking empty space: always targets the workspace root. -->
+                                        <MenuItem Header="New Note" Command="{Binding NewNoteCommand}" CommandParameter="{Binding Root}" />
+                                        <MenuItem Header="New Folder" Command="{Binding NewFolderCommand}" CommandParameter="{Binding Root}" />
                                         <Separator />
                                         <MenuItem Header="Refresh" Command="{Binding RefreshTreeCommand}" />
                                     </ContextMenu>

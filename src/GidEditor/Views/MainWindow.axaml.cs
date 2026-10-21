@@ -63,6 +63,7 @@ public partial class MainWindow : Window, IUiServices
         Preview.LinkClicked += url => _vm.OpenLink(url);
         Preview.TaskToggled += OnPreviewTaskToggled;
         FileTree.Tapped += OnFileTreeTapped;
+        FileTree.AddHandler(PointerPressedEvent, OnFileTreePointerPressed, RoutingStrategies.Tunnel);
         FileTree.KeyDown += OnFileTreeKeyDown;
 
         AddHandler(KeyDownEvent, OnWindowKeyDown, RoutingStrategies.Tunnel);
@@ -583,8 +584,21 @@ public partial class MainWindow : Window, IUiServices
         _vm.OpenNodeCommand.Execute(node);
     }
 
+    /// <summary>Clicking empty space below the items deselects, so new notes and folders go to the root.</summary>
+    private void OnFileTreePointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if ((e.Source as Visual)?.FindAncestorOfType<TreeViewItem>(includeSelf: true) is null)
+            _vm.ClearSelectionCommand.Execute(null);
+    }
+
     private void OnFileTreeKeyDown(object? sender, KeyEventArgs e)
     {
+        if (e.Key == Key.Escape)
+        {
+            _vm.ClearSelectionCommand.Execute(null);
+            e.Handled = true;
+            return;
+        }
         if (_vm.SelectedNode is not { } node) return;
         switch (e.Key)
         {
